@@ -40,6 +40,9 @@ namespace MeshGO.Views
 
         //----------------------------------------------------------------------Generate methods----------------------------------------------------------------------//
 
+        /// <summary>
+        /// Function that generates set of random points
+        /// </summary>
         void generateStructure()
         {
             Random rnd = new Random();
@@ -69,6 +72,9 @@ namespace MeshGO.Views
             }
         }
 
+        /// <summary>
+        /// Function that draw points read from file
+        /// </summary>
         void generateFileStructure()
         {
             foreach (Point item in childArray)
@@ -89,6 +95,10 @@ namespace MeshGO.Views
             }
         }
 
+        /// <summary>
+        /// Function that draws Convex Hull lines
+        /// </summary>
+        /// <param name="points">set of Convex Hull points</param>
         void generateConvexHull(IList<Point> points)
         {
             for (int i = 0; i < points.Count - 1; i++)
@@ -99,26 +109,33 @@ namespace MeshGO.Views
             createLine(points[0], points[points.Count - 1]);
         }
 
+        /// <summary>
+        /// Function used to draw line between 2 points
+        /// </summary>
         void createLine(Point point1, Point point2)
         {
             Line line = new Line();
 
-            //kolor pędzla
+            //Brush color
             line.Stroke = System.Windows.Media.Brushes.Black;
 
-            //Pozycja startowa
+            //Point positions
             line.X1 = point1.X + 4;
             line.X2 = point2.X + 4;
             line.Y1 = point1.Y + 4;
             line.Y2 = point2.Y + 4;
 
-            //grubość linii
+            //Line thickness
             line.StrokeThickness = 1;
 
             Cnva.Children.Add(line);
         }
 
         //----------------------------------------------------------------------Click methods----------------------------------------------------------------------//
+
+        /// <summary>
+        /// Function called after clicking CONVEX HULL button
+        /// </summary>
         void GENERATE_Click(object sender, RoutedEventArgs e)
         {
             generated = true;
@@ -142,22 +159,19 @@ namespace MeshGO.Views
             generateConvexHull(IhullPointArray);
         }
 
+        /// <summary>
+        /// Function called after clicking LOAD FILE button
+        /// </summary>
         void fileLoad_Click(object sender, RoutedEventArgs e)
         {
             Cnva.Children.Clear();
             load();
 
-            if (Triangle.IsChecked == true)
-            {
-                //generateStructuredMeshTriangleLines();
-            }
-            else
-            {
-                //generateStructuredMeshLines();
-            }
-
         }
 
+        /// <summary>
+        /// Function called after clicking CREATE FILE button
+        /// </summary>
         void fileGenerate_Click(object sender, RoutedEventArgs e)
         {
             write();
@@ -224,13 +238,18 @@ namespace MeshGO.Views
             }
         }
 
-    //----------------------------------------------------------------------File operations----------------------------------------------------------------------//
+        //----------------------------------------------------------------------File operations----------------------------------------------------------------------//
 
-    void load()
+        /// <summary>
+        /// Function used to load data from file
+        /// </summary>
+        void load()
         {
+            //reads file path and open file
             string docPath = Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments);
             System.IO.StreamReader file = new System.IO.StreamReader(@$"{docPath}\{fileTextBox.Text}.txt");
 
+            //read count from file
             string line = file.ReadLine();
             count = int.Parse(line);
 
@@ -254,6 +273,9 @@ namespace MeshGO.Views
             generateFileStructure();
         }
 
+        /// <summary>
+        /// Function used to save data from file
+        /// </summary>
         void write()
         {
             string docPath = Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments);
@@ -268,14 +290,18 @@ namespace MeshGO.Views
             }
         }
 
-        //----------------------------------------------------------------------hull Algorithm----------------------------------------------------------------------//
-
+        //----------------------------------------------------------------------Hull Algorithm----------------------------------------------------------------------//
 
         public static double cross(Point O, Point A, Point B)
         {
             return (A.X - O.X) * (B.Y - O.Y) - (A.Y - O.Y) * (B.X - O.X);
         }
 
+        /// <summary>
+        /// Convex Hull algorithm
+        /// </summary>
+        /// <param name="points"></param>
+        /// <returns>returns points that belong to Convex Hull</returns>
         public static List<Point> GetConvexHull(List<Point> points)
         {
             if (points == null)

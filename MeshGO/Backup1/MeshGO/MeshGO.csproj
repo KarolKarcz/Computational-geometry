@@ -4,15 +4,14 @@
     <TargetFramework>netcoreapp3.1</TargetFramework>
     <UseWPF>true</UseWPF>
     <FileUpgradeFlags>40</FileUpgradeFlags>
-    <UpgradeBackupLocation>C:\Users\Karol.KarolK\Documents\GitHub\Computational-geometry\MeshGO\Backup1\MeshGO\</UpgradeBackupLocation>
-    <OldToolsVersion>15.0</OldToolsVersion>
+    <UpgradeBackupLocation>C:\Users\Karol.KarolK\Documents\GitHub\Computational-geometry\MeshGO\Backup\MeshGO\</UpgradeBackupLocation>
+    <OldToolsVersion>2.0</OldToolsVersion>
   </PropertyGroup>
   <ItemGroup>
     <PackageReference Include="Caliburn.Micro" Version="3.2.0" />
     <PackageReference Include="HelixToolkit.Wpf" Version="2.11.0" />
     <PackageReference Include="MaterialDesignThemes" Version="3.1.0" />
     <PackageReference Include="MIConvexHull" Version="1.1.19.1019" />
-    <PackageReference Include="Microsoft.Build.Framework" Version="16.5.0" />
     <PackageReference Include="System.ComponentModel.TypeConverter" Version="4.3.0" />
   </ItemGroup>
   <ItemGroup>

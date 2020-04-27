@@ -1,23 +1,24 @@
 {
   "format": 1,
   "restore": {
-    "C:\\Users\\Karol\\source\\repos\\Nowy folder\\Computational-geometry\\MeshGO\\MeshGO\\MeshGO.csproj": {}
+    "C:\\Users\\Karol.KarolK\\Documents\\GitHub\\Computational-geometry\\MeshGO\\MeshGO\\MeshGO.csproj": {}
   },
   "projects": {
-    "C:\\Users\\Karol\\source\\repos\\Nowy folder\\Computational-geometry\\MeshGO\\MeshGO\\MeshGO.csproj": {
+    "C:\\Users\\Karol.KarolK\\Documents\\GitHub\\Computational-geometry\\MeshGO\\MeshGO\\MeshGO.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Users\\Karol\\source\\repos\\Nowy folder\\Computational-geometry\\MeshGO\\MeshGO\\MeshGO.csproj",
+        "projectUniqueName": "C:\\Users\\Karol.KarolK\\Documents\\GitHub\\Computational-geometry\\MeshGO\\MeshGO\\MeshGO.csproj",
         "projectName": "MeshGO",
-        "projectPath": "C:\\Users\\Karol\\source\\repos\\Nowy folder\\Computational-geometry\\MeshGO\\MeshGO\\MeshGO.csproj",
-        "packagesPath": "C:\\Users\\Karol\\.nuget\\packages\\",
-        "outputPath": "C:\\Users\\Karol\\source\\repos\\Nowy folder\\Computational-geometry\\MeshGO\\MeshGO\\obj\\",
+        "projectPath": "C:\\Users\\Karol.KarolK\\Documents\\GitHub\\Computational-geometry\\MeshGO\\MeshGO\\MeshGO.csproj",
+        "packagesPath": "C:\\Users\\Karol.KarolK\\.nuget\\packages\\",
+        "outputPath": "C:\\Users\\Karol.KarolK\\Documents\\GitHub\\Computational-geometry\\MeshGO\\MeshGO\\obj\\",
         "projectStyle": "PackageReference",
         "fallbackFolders": [
-          "C:\\Microsoft\\Xamarin\\NuGet\\"
+          "F:\\Microsoft\\Xamarin\\NuGet\\",
+          "C:\\Program Files\\dotnet\\sdk\\NuGetFallbackFolder"
         ],
         "configFilePaths": [
-          "C:\\Users\\Karol\\AppData\\Roaming\\NuGet\\NuGet.Config",
+          "C:\\Users\\Karol.KarolK\\AppData\\Roaming\\NuGet\\NuGet.Config",
           "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config",
           "C:\\Program Files (x86)\\NuGet\\Config\\Xamarin.Offline.config"
         ],
@@ -58,6 +59,10 @@
               "target": "Package",
               "version": "[3.1.0, )"
             },
+            "Microsoft.Build.Framework": {
+              "target": "Package",
+              "version": "[16.5.0, )"
+            },
             "System.ComponentModel.TypeConverter": {
               "target": "Package",
               "version": "[4.3.0, )"
@@ -81,7 +86,7 @@
               "privateAssets": "none"
             }
           },
-          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\3.1.102\\RuntimeIdentifierGraph.json"
+          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\3.1.101\\RuntimeIdentifierGraph.json"
         }
       }
     }

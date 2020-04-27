@@ -19,7 +19,7 @@ namespace MeshGO.Views
     /// </summary>
     public partial class MeshView : UserControl
     {
-        int podzial;
+        int division;
         int width;
         int height;
         Point[,] childArray;
@@ -36,14 +36,17 @@ namespace MeshGO.Views
 
         //----------------------------------------------------------------------Mesh generation----------------------------------------------------------------------//
 
+        /// <summary>
+        /// Function generates mesh of points. Density is given by user
+        /// </summary>
         private void generateStructuredMesh()
         {
             int childi, childj;
             childi = childj = 0;
 
-            for (int i = 0; i <= (int)Cnva.Height; i += height / podzial)
+            for (int i = 0; i <= (int)Cnva.Height; i += height / division)
             {
-                for (int j = 0; j <= (int)Cnva.Width; j += width / podzial)
+                for (int j = 0; j <= (int)Cnva.Width; j += width / division)
                 {
                     SolidColorBrush mySolidColorBrush = new SolidColorBrush();
                     mySolidColorBrush.Color = Color.FromArgb(255, 255, 255, 0);
@@ -68,10 +71,13 @@ namespace MeshGO.Views
             }
         }
 
+        /// <summary>
+        /// Function generates lines between points generated in function generateStructuredMesh() lines form rectangle shapes
+        /// </summary>
         void generateStructuredMeshLines()
         {
-            int hgh = (int)(Cnva.Height / (height / podzial)) + 1;
-            int wdth = (int)(Cnva.Width / (width / podzial)) + 1;
+            int hgh = (int)(Cnva.Height / (height / division)) + 1;
+            int wdth = (int)(Cnva.Width / (width / division)) + 1;
 
             for (int i = 0; i < hgh; i++)
             {
@@ -98,11 +104,13 @@ namespace MeshGO.Views
                 }
             }
         }
-
+        /// <summary>
+        /// Function generates lines between points generated in function generateStructuredMesh() lines form triangle shapes
+        /// </summary>
         void generateStructuredMeshTriangleLines()
         {
-            int hgh = (int)(Cnva.Height / (height / podzial)) + 1;
-            int wdth = (int)(Cnva.Width / (width / podzial)) + 1;
+            int hgh = (int)(Cnva.Height / (height / division)) + 1;
+            int wdth = (int)(Cnva.Width / (width / division)) + 1;
 
             for (int i = 0; i < hgh; i++)
             {
@@ -132,9 +140,13 @@ namespace MeshGO.Views
             }
         }
 
+        /// <summary>
+        /// Function generates array of X coordinates later used to draw random rectangles and triangles
+        /// </summary>
+        /// <returns>Array of X coordinate</returns>
         int[] divideLine()
         {
-            int wdth = (int)(Cnva.Width / (width / podzial)) + 1;
+            int wdth = (int)(Cnva.Width / (width / division)) + 1;
             int[] output = new int[wdth];
             
             Random rnd = new Random();
@@ -153,6 +165,9 @@ namespace MeshGO.Views
             
         }
 
+        /// <summary>
+        /// Function generates mesh of points. Number of division points is given by user
+        /// </summary>
         void generateRandomMesh()
         {
             int childi, childj;
@@ -160,9 +175,9 @@ namespace MeshGO.Views
 
             int[] vs = divideLine();
 
-            for (int i = 0; i <= (int)Cnva.Height; i += height / podzial)
+            for (int i = 0; i <= (int)Cnva.Height; i += height / division)
             {
-                for (int j = 0; j <= (int)Cnva.Width; j += width / podzial)
+                for (int j = 0; j <= (int)Cnva.Width; j += width / division)
                 {
                     SolidColorBrush mySolidColorBrush = new SolidColorBrush();
                     mySolidColorBrush.Color = Color.FromArgb(255, 255, 255, 0);
@@ -187,50 +202,59 @@ namespace MeshGO.Views
             }
         }
 
+        /// <summary>
+        /// Function used to draw line between 2 points
+        /// </summary>
         void createLine(Point point1, Point point2)
         {
             Line line = new Line();
 
-            //kolor pędzla
+            //Brush color
             line.Stroke = System.Windows.Media.Brushes.Black;
 
-            //Pozycja startowa
+            //Point positions
             line.X1 = point1.Y;
             line.X2 = point2.Y;
             line.Y1 = point1.X;
             line.Y2 = point2.X;
 
-            //grubość linii
+            //Line thickness
             line.StrokeThickness = 1;
 
             Cnva.Children.Add(line);
         }
 
         //----------------------------------------------------------------------Click methods----------------------------------------------------------------------//
-
+        /// <summary>
+        /// Function called after clicking SQUARE MESH button 
+        /// </summary>
         private void GENERATE_Click(object sender, RoutedEventArgs e)
         {
             generated = true;
             Cnva.Children.Clear();
-            podzial = int.Parse(TextBox1.Text);
-            childArray = new Point[(int)(Cnva.Height / (height / podzial)) + 1, (int)(Cnva.Width / (width / podzial)) + 1];
+            division = int.Parse(TextBox1.Text);
+            childArray = new Point[(int)(Cnva.Height / (height / division)) + 1, (int)(Cnva.Width / (width / division)) + 1];
             
             generateStructuredMesh();
             generateStructuredMeshLines();
         }
-
+        /// <summary>
+        /// Function called after clicking TRIANGLE MESH button 
+        /// </summary>
         private void generateTriangle_Click(object sender, RoutedEventArgs e)
         {
             generated = true;
             Cnva.Children.Clear();
-            podzial = int.Parse(TextBox1.Text);
-            childArray = new Point[(int)(Cnva.Height / (height / podzial)) + 1, (int)(Cnva.Width / (width / podzial)) + 1];
+            division = int.Parse(TextBox1.Text);
+            childArray = new Point[(int)(Cnva.Height / (height / division)) + 1, (int)(Cnva.Width / (width / division)) + 1];
             
             generateStructuredMesh();
             generateStructuredMeshTriangleLines();
 
         }
-
+        /// <summary>
+        /// Function called after clicking LOAD FILE button 
+        /// </summary>
         private void fileLoad_Click(object sender, RoutedEventArgs e)
         {
             Cnva.Children.Clear();
@@ -247,35 +271,46 @@ namespace MeshGO.Views
 
         }
 
+        /// <summary>
+        /// Function called after clicking CREATE FILE button 
+        /// </summary>
         private void fileGenerate_Click(object sender, RoutedEventArgs e)
         {
             write();
         }
 
+        /// <summary>
+        /// Function called after clicking RND SQ MESH button 
+        /// </summary>
         private void generateRandomSquare_Click(object sender, RoutedEventArgs e)
         {
             generated = true;
             Cnva.Children.Clear();
-            podzial = int.Parse(TextBox1.Text);
-            childArray = new Point[(int)(Cnva.Height / (height / podzial)) + 1, (int)(Cnva.Width / (width / podzial)) + 1];
+            division = int.Parse(TextBox1.Text);
+            childArray = new Point[(int)(Cnva.Height / (height / division)) + 1, (int)(Cnva.Width / (width / division)) + 1];
 
             generateRandomMesh();
             generateStructuredMeshLines();
         }
 
+        /// <summary>
+        /// Function called after clicking RND TRG MESH button 
+        /// </summary>
         private void generateRandomTriangle_Click(object sender, RoutedEventArgs e)
         {
             generated = true;
             Cnva.Children.Clear();
-            podzial = int.Parse(TextBox1.Text);
-            childArray = new Point[(int)(Cnva.Height / (height / podzial)) + 1, (int)(Cnva.Width / (width / podzial)) + 1];
+            division = int.Parse(TextBox1.Text);
+            childArray = new Point[(int)(Cnva.Height / (height / division)) + 1, (int)(Cnva.Width / (width / division)) + 1];
 
             generateRandomMesh();
             generateStructuredMeshTriangleLines();
         }
 
         //----------------------------------------------------------------------Validation----------------------------------------------------------------------//
-
+        /// <summary>
+        /// Function validating file name textbox 
+        /// </summary>
         private void fileTextBox_TextChanged(object sender, TextChangedEventArgs e)
         {
             valid();
@@ -302,6 +337,9 @@ namespace MeshGO.Views
 
         }
 
+        /// <summary>
+        /// Main validating function
+        /// </summary>
         void valid()
         {
             if (fileTextBox.Text != "" && Square.IsChecked == true || Triangle.IsChecked == true)
@@ -323,6 +361,9 @@ namespace MeshGO.Views
             }
         }
 
+        /// <summary>
+        /// Function that validating generation buttons 
+        /// </summary>
         void TextBox_TextChanged(object sender, TextChangedEventArgs e)
         {
             if (TextBox1.Text != "")
@@ -343,25 +384,33 @@ namespace MeshGO.Views
 
 
         //----------------------------------------------------------------------File operations----------------------------------------------------------------------//
-
+        
+        /// <summary>
+        /// Function that load data from *.txt file
+        /// </summary>
         void load()
         {
+            //line - line loaded from file
             string line;
 
+            //reads file path and open file
             string docPath = Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments);
-
             System.IO.StreamReader file = new System.IO.StreamReader(@$"{docPath}\{fileTextBox.Text}.txt");
 
+            //read division size from file
             line = file.ReadLine();
-            podzial = int.Parse(line);
+            division = int.Parse(line);
 
-            childArray = new Point[(int)(Cnva.Height / (height / podzial)) + 1, (int)(Cnva.Width / (width / podzial)) + 1];
+            //create new array
+            childArray = new Point[(int)(Cnva.Height / (height / division)) + 1, (int)(Cnva.Width / (width / division)) + 1];
 
-            int hgh = (int)(Cnva.Height / (height / podzial)) + 1;
-            int wdth = (int)(Cnva.Width / (width / podzial)) + 1;
+            //set height and width parameter
+            int hgh = (int)(Cnva.Height / (height / division)) + 1;
+            int wdth = (int)(Cnva.Width / (width / division)) + 1;
 
             double x,y;
 
+            //saves data from file to Point array
             for (int i = 0; i < hgh; i++)
             {
                 for (int j = 0; j < wdth; j++)
@@ -397,10 +446,13 @@ namespace MeshGO.Views
             file.Close();
         }
 
+        /// <summary>
+        /// Function that create file and saves data
+        /// </summary>
         void write()
         {
-            int hgh = (int)(Cnva.Height / (height / podzial)) + 1;
-            int wdth = (int)(Cnva.Width / (width / podzial)) + 1;
+            int hgh = (int)(Cnva.Height / (height / division)) + 1;
+            int wdth = (int)(Cnva.Width / (width / division)) + 1;
 
             // Set a variable to the Documents path.
             string docPath =
@@ -409,7 +461,7 @@ namespace MeshGO.Views
             // Write the string array to a new file named "WriteLines.txt".
             using (StreamWriter outputFile = new StreamWriter(System.IO.Path.Combine(docPath, $"{fileTextBox.Text}.txt")))
             {
-                outputFile.WriteLine(podzial);
+                outputFile.WriteLine(division);
                 for (int i = 0; i < hgh; i++)
                 {
                     for (int j = 0; j < wdth; j++)
