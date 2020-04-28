@@ -56,6 +56,13 @@
                     <TextBlock HorizontalAlignment="Center" Text="CONVEX HULL" FontFamily="Champagne &amp; Limousines"/>
                 </Grid>
             </Button>
+
+            <Button x:Name="PICTURE" Margin="10" Background="#FF8522BD" BorderBrush="#FF8522BD">
+                <Grid Width="150">
+                    <materialDesign:PackIcon Kind="Build" VerticalAlignment="Center"/>
+                    <TextBlock HorizontalAlignment="Center" Text="PICTURE" FontFamily="Champagne &amp; Limousines"/>
+                </Grid>
+            </Button>
         </StackPanel>
         <ContentControl x:Name="ActiveItem" Grid.Column="2" Grid.Row="2"></ContentControl>
     </Grid>

@@ -67,3 +67,5 @@ C:\Users\Karol.KarolK\Documents\GitHub\Computational-geometry\MeshGO\MeshGO\obj\
 C:\Users\Karol.KarolK\Documents\GitHub\Computational-geometry\MeshGO\MeshGO\obj\Debug\netcoreapp3.1\MeshGO.dll
 C:\Users\Karol.KarolK\Documents\GitHub\Computational-geometry\MeshGO\MeshGO\obj\Debug\netcoreapp3.1\MeshGO.pdb
 C:\Users\Karol.KarolK\Documents\GitHub\Computational-geometry\MeshGO\MeshGO\obj\Debug\netcoreapp3.1\MeshGO.csproj.CoreCompileInputs.cache
+C:\Users\Karol.KarolK\Documents\GitHub\Computational-geometry\MeshGO\MeshGO\obj\Debug\netcoreapp3.1\Views\PictureView.g.cs
+C:\Users\Karol.KarolK\Documents\GitHub\Computational-geometry\MeshGO\MeshGO\obj\Debug\netcoreapp3.1\Views\PictureView.baml

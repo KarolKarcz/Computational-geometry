@@ -21,5 +21,10 @@ namespace MeshGO.ViewModels
         {
             ActivateItem(new ConvexHullViewModel());
         }
+
+        public void PICTURE()
+        {
+            ActivateItem(new PictureViewModel());
+        }
     }
 }
