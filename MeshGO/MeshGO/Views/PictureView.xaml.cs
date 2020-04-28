@@ -20,74 +20,71 @@ namespace MeshGO.Views
 {
     public partial class PictureView : UserControl
     {
+        /// <summary>
+        /// Variables and data containers that are available in entire view
+        /// </summary>
         string imgSrc;
-        List<Point> nodes;
-        List<Point> points;
-        BitmapImage bitMap;
         int tolerance = 5;
+        BitmapImage bitMap;
         byte[] pixels;
-        Node rootNode;
         PixelColor[,] result;
+        List<Node> nodes;
+        
         public PictureView()
         {
             InitializeComponent();
 
-            nodes = new List<Point>();
-            points = new List<Point>();
+            nodes = new List<Node>();
             bitMap = new BitmapImage();
         }
 
         //----------------------------------------------------------------------Click methods----------------------------------------------------------------------//
-
+        /// <summary>
+        /// Function called after clicking GEN QUAD TREE button
+        /// </summary>
         private void GENERATE_Click(object sender, RoutedEventArgs e)
         {
             constructQT();
         }
-
+        /// <summary>
+        /// Function called after clicking LOAD IMAGE button
+        /// Create path to file and display Image
+        /// </summary>
         private void fileLoad_Click(object sender, RoutedEventArgs e)
         {
-            Image image = new Image();
+            Cnva.Children.Clear();
 
             OpenFileDialog ofd = new OpenFileDialog();
             ofd.Filter = "Images|*.png;*.jpg;*.jpeg;*.bmp;*.gif";
+
             if (ofd.ShowDialog() == true)
             {
                 System.IO.FileInfo fileInfo = new System.IO.FileInfo(ofd.FileName);
-                BitmapImage src = new BitmapImage();
-                src.BeginInit();
-                src.CacheOption = BitmapCacheOption.OnLoad;
-                src.UriSource = new Uri(fileInfo.FullName, UriKind.Relative);
                 imgSrc = fileInfo.FullName;
-                src.EndInit();
-                image.Source = src;
-                image.Height = src.PixelHeight;
-                image.Width = src.PixelWidth;
+
+                Image image = Helpers.processImage.image(fileInfo);
+
                 Cnva.Children.Add(image);
-                int zindex = Cnva.Children.Count;
-                Canvas.SetZIndex(image, zindex);
+
+                Canvas.SetZIndex(image, 0);
                 Canvas.SetLeft(image, 0);
                 Canvas.SetTop(image, 0);
-
             }
 
-            analyze();
+            // function that generates bitmap
+            getBitmap();
 
             GENERATE.IsEnabled = true;
      
         }
-
-        //----------------------------------------------------------------------Validation----------------------------------------------------------------------//
-
         //----------------------------------------------------------------------Bitmap Operations----------------------------------------------------------------------//
 
-        private void analyze()
+        /// <summary>
+        /// Function that read bytes from image which are later used for QuadTree generation
+        /// </summary>
+        private void getBitmap()
         {
-            pixels = getBitmap();
-            write();
-        }
-
-        private byte[] getBitmap()
-        {
+            bitMap = new BitmapImage();
             bitMap.BeginInit();
             bitMap.UriSource = new Uri(imgSrc, UriKind.Relative);
             bitMap.EndInit();
@@ -95,16 +92,17 @@ namespace MeshGO.Views
             result = new PixelColor[bitMap.PixelWidth, bitMap.PixelHeight];
 
             int stride = (int)bitMap.PixelWidth * (bitMap.Format.BitsPerPixel / 8);
-            byte[] pixels = new byte[(int)bitMap.PixelHeight * stride * 4];
 
-            bitMap.CopyPixels(pixels, stride * 4, 0);
             CopyPixels(bitMap, result, stride, 0);
-
-            write(result);
-
-            return pixels;
+        
+            //write(result);
         }
 
+        /// <summary>
+        /// Function that fill Array with RGBA data
+        /// </summary>
+        /// <param name="source">Image we process</param>
+        /// <param name="pixels">Array of pixels to which we save data</param>
         public void CopyPixels(BitmapSource source, PixelColor[,] pixels, int stride, int offset)
         {
             var height = source.PixelHeight;
@@ -126,70 +124,44 @@ namespace MeshGO.Views
 
         //----------------------------------------------------------------------File operation----------------------------------------------------------------------//
 
-        private void readImage()
-        {
-            string docPath = Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments);
-        }
-
-        void write()
-        {
-            int row = 0;
-            int inc = 0;
-            // Set a variable to the Documents path.
-            string docPath =
-              Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments);
-
-            // Write the string array to a new file named "WriteLines.txt".
-            using (StreamWriter outputFile = new StreamWriter(System.IO.Path.Combine(docPath, $"out.txt")))
-            {
-
-                for (int i = 0; i < pixels.Length; i+=4)
-                {
-                    outputFile.WriteLine($"i:{i/4} || row:{row} ||column:{inc} ||R {pixels[i]}||G {pixels[i+1]}||B {pixels[i+2]}||A {pixels[i + 3]}");
-                    inc++;
-
-                    if (inc == bitMap.PixelHeight)
-                    {
-                        row++;
-                        inc = 0;
-                    }
-                }
-            }
-        }
-
+        /// <summary>
+        /// Function that allow to easly look into each Pixel RGBA data
+        /// Text file is easiest form of containing this data
+        /// Usage significantly slows program
+        /// </summary>
+        /// <param name="result">Array with each Pixel RGBA information</param>
         void write(PixelColor[,] result)
         {
-            int row = 0;
-            int inc = 0;
             // Set a variable to the Documents path.
-            string docPath =
-              Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments);
+            string docPath = Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments);
 
-            // Write the string array to a new file named "WriteLines.txt".
-            using (StreamWriter outputFile = new StreamWriter(System.IO.Path.Combine(docPath, $"zxc.txt")))
+            // Write the string array to a new file named "pixelInfo.txt".
+            using (StreamWriter outputFile = new StreamWriter(System.IO.Path.Combine(docPath, $"pixelInfo.txt")))
             {
-
                 for (int i = 0; i < bitMap.PixelWidth; i++)
                 {
                     for (int j = 0; j < bitMap.PixelHeight; j++)
                     {
-                        outputFile.WriteLine($"i:{i} || j:{j} ||RGBA {result[i,j].Red} ||{result[i, j].Green} ||{result[i, j].Blue} ||{result[i, j].Alpha} ||");
+                        outputFile.WriteLine($"i:{i} ||j:{j} ||R {result[i,j].Red} ||G {result[i, j].Green} ||B {result[i, j].Blue} ||A {result[i, j].Alpha}");
                     }
                 }
             }
         }
         //----------------------------------------------------------------------QuadTree----------------------------------------------------------------------//
-
+        /// <summary>
+        /// Function that checks every rectangle 
+        /// Checks if it has white and black pixels
+        /// </summary>
+        /// <param name="rect">Rectangle which function check</param>
+        /// <returns>Information whether both colors are found</returns>
         Boolean checkFill(Rect rect)
         {
             Boolean mixed = false;
             Boolean isBlack = false;
             Boolean isWhite = false;
 
-
             for (int wi = (int)rect.X; wi < ((int)rect.X + rect.Width); wi++)
             {
-
                 for (int hi = (int)rect.Y; hi < ((int)rect.Y + rect.Height); hi++)
                 {
 
@@ -201,27 +173,26 @@ namespace MeshGO.Views
 
                     if (isBlack && isWhite)
                         mixed = true;
-
                 }
-
             }
 
             return mixed;
 
         }
 
+        /// <summary>
+        /// Recursive function that creates new rectangles
+        /// </summary>
+        /// <param name="root"></param>
         void subdivide(Node root)
         {
-
             if (checkFill(root.rectangle))
             {
-
                 int width = (int)root.rectangle.Width / 2;
                 int height = (int)root.rectangle.Height / 2;
 
                 if (width > tolerance && height > tolerance)
                 {
-
                     Node n1 = new Node(drawRectangle(new Point(root.rectangle.X, root.rectangle.Y), width, height), null, null, null, null);
                     Node n2 = new Node(drawRectangle(new Point(root.rectangle.X + width, root.rectangle.Y), width, height), null, null, null, null);
                     Node n3 = new Node(drawRectangle(new Point(root.rectangle.X, root.rectangle.Y + height), width, height), null, null, null, null);
@@ -236,38 +207,31 @@ namespace MeshGO.Views
                     subdivide(n2);
                     subdivide(n3);
                     subdivide(n4);
-
                 }
-
             }
-
         }
 
+        /// <summary>
+        /// Function that creates a rectangle and adds it to the canvas
+        /// </summary>
+        /// <param name="pointStart">Rectangle starating point</param>
+        /// <param name="width">How width the rectangle will be</param>
+        /// <param name="height">how high will rectangle be</param>
+        /// <returns>Created rectangle</returns>
         Rect drawRectangle(Point pointStart,int width,int height)
         {
-            Path myPath2 = new Path();
-            myPath2.Stroke = Brushes.Red;
-            myPath2.StrokeThickness = 1;
-
-            Rect myRect = new Rect();
-            myRect.Size = new Size(width, height);
-            myRect.Location = pointStart;
-            RectangleGeometry myRectangleGeometry = new RectangleGeometry();
-            myRectangleGeometry.Rect = myRect;
-
-            GeometryGroup myGeometryGroup2 = new GeometryGroup();
-            myGeometryGroup2.Children.Add(myRectangleGeometry);
-
-            myPath2.Data = myGeometryGroup2;
+            Rect rect = Helpers.createShapes.createRectangle(pointStart ,width ,height);
+            Path myPath2 = Helpers.createShapes.createPath(rect);
 
             Cnva.Children.Add(myPath2);
             Canvas.SetZIndex(myPath2, 2);
-            //Cnva.Children[Cnva.Children.Count - 1].SetValue(Canvas.TopProperty, pointStart.X + 10);
-            //Cnva.Children[Cnva.Children.Count - 1].SetValue(Canvas.TopProperty, pointStart.Y + 10);
 
-            return myRect;
+            return rect;
         }
 
+        /// <summary>
+        /// First function that start QuadTree creation process
+        /// </summary>
         void constructQT()
         {
             int width = (int)bitMap.PixelWidth;
@@ -277,7 +241,7 @@ namespace MeshGO.Views
             myRect.Size = new Size(width, height);
             myRect.Location = new Point(0,0);
 
-            rootNode = new Node(myRect, null, null, null, null);
+            Node rootNode = new Node(myRect, null, null, null, null);
 
             subdivide(rootNode);
         }

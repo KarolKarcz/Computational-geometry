@@ -28,7 +28,7 @@ xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
             <Button x:Name="GENERATE" Margin="10" Background="#FF8522BD" IsEnabled="False" BorderBrush="#FF8522BD" Click="GENERATE_Click">
                 <Grid Width="150">
                     <materialDesign:PackIcon Kind="Autorenew" VerticalAlignment="Center"/>
-                    <TextBlock HorizontalAlignment="Center" Text="CONVEX HULL" FontFamily="Champagne &amp; Limousines"/>
+                    <TextBlock HorizontalAlignment="Center" Text="GEN QUAD TREE" FontFamily="Champagne &amp; Limousines"/>
                 </Grid>
             </Button>
 
@@ -36,7 +36,7 @@ xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
             <Button x:Name="fileLoad" Margin="10" Background="#FF8522BD" IsEnabled="True" BorderBrush="#FF8522BD" Click="fileLoad_Click">
                 <Grid Width="150">
                     <materialDesign:PackIcon Kind="Backup" VerticalAlignment="Center"/>
-                    <TextBlock HorizontalAlignment="Center" Text="LOAD FILE" FontFamily="Champagne &amp; Limousines"/>
+                    <TextBlock HorizontalAlignment="Center" Text="LOAD IMAGE" FontFamily="Champagne &amp; Limousines"/>
                 </Grid>
             </Button>
         </StackPanel>
